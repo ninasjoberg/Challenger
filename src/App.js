@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './App.css';
 import firebase from './Firebase.js';
+import './App.css';
 import Header from './Header/Header.js';
 import Home from './Home.js';
 import LoginForm from './LoginForm.js';
 import RegisterForm from './RegisterForm.js';
-import UserPage from './UserPage.js';
+import UserPage from './UserPage/UserPage.js';
 
 
 const routes = {
@@ -16,16 +16,28 @@ const routes = {
 }
 
 
-class App extends Component {
+export default class App extends Component {
 
   state = {
-    user: '',
-    username: '',
-    password: '',
-    email: '',
-    input: '',
-    currentPage: 'home'
+    currentUser: '',
+    currentPage: 'home',
   }
+
+  //hämtar automatiskt alla förändingar i auth (inloggning & reg.) från firebase
+  componentDidMount(){
+    firebase.auth().onAuthStateChanged((user) => {
+      if(user) {
+          const newUser = {
+              email: user.email,
+              //username: user.displayName //<-- kolla hur man lagrar username, displayname? 
+          }
+          this.setState({currentUser: newUser});
+      }else{
+          console.log('something went wrong');
+          this.setState({currentUser: ''});
+      }
+    })
+  }  
 
 
   changePage = (page) => {
@@ -36,16 +48,16 @@ class App extends Component {
   render() {
 
     const Page = routes[this.state.currentPage];
-    console.log(this.state.currentPage);
-
 
     return (
       <div className="App">
-        <Header goTo={this.changePage}/>
-        <Page goTo={this.changePage}/>
+        <Header goTo={this.changePage} currentUser={this.state.currentUser.email}/>
+        <Page goTo={this.changePage} currentUser={this.state.currentUser.email}/>
       </div>
     );
   }
 }
 
-export default App;
+
+
+

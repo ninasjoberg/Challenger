@@ -1,0 +1,25 @@
+.user-page{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+h1{
+    width: 100%;
+}
+
+.create-challenge{
+    align-self: flex-start;
+    flex-direction: column;
+    width: 20%;
+    border: 1px solid lightgrey;
+}
+
+
+
+    
+
+
+.my-challenges{
+    width: 80%;
+}
