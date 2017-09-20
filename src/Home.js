@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
+import ChallengesList from './ChallengesList.js';
+
+
 
 export default function Home(props){
 
     return(
         <div>
-            <button onClick={() => props.goTo('login')}>Login</button>
-            <button onClick={() => props.goTo('register')}>Register</button>
+            <h5>All Challenges:</h5>
+            <ul>
+                <ChallengesList/>
+            </ul>
         </div>
     );
-}
+}    
+
+
+

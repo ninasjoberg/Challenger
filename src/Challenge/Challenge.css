@@ -1,0 +1,10 @@
+.challengeBox{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    max-width: 25%;
+    padding: 2rem;
+    border: 1px solid black;
+    background-color: white;
+    
+}

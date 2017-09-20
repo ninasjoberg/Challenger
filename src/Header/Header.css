@@ -1,5 +1,20 @@
-
 .root{
+    margin-bottom: 6rem;
+}
+
+
+.heading{
+    width: 100%;
+    text-align: center;
+    color: #DED8B4;
+    //font-family: 'nunito_sansextralight';   
+    font-size: 3rem;
+    letter-spacing: 1.6px; 
+}
+
+.header-buttons{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    padding: 2rem;
 }
