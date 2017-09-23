@@ -1,10 +1,58 @@
 .challengeBox{
-    margin: 0 auto;
+    margin: auto;
+    margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
-    max-width: 25%;
-    padding: 2rem;
-    border: 1px solid black;
+    width: 80%;
+    border: 1px solid lightgray;
     background-color: white;
-    
+}
+
+
+
+.purple{
+    background-color: #C282B3;
+    color: white;
+}
+
+.orange{
+    background-color: #FAC4B6; 
+    color: white;
+}
+
+
+.grey{
+    background-color: lightgray; 
+    color: white;
+}
+
+.blue{
+    background-color: #75B4E7;
+    color: white;
+}
+
+
+
+
+
+.category-flag{
+    width: 5rem;
+    margin-top: 1rem;
+}
+
+
+
+
+.challenge-buttomNav{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+}
+
+.accept-click{
+    color: #C85B70;
+}
+
+.complete-click{
+    color: #74CCB4;
 }

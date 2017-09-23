@@ -7,7 +7,6 @@
     width: 100%;
     text-align: center;
     color: #DED8B4;
-    //font-family: 'nunito_sansextralight';   
     font-size: 3rem;
     letter-spacing: 1.6px; 
 }
@@ -17,4 +16,9 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 2rem;
+}
+
+.header-link{
+    color: #DED8B4;
+    padding: 0.5rem;
 }

@@ -12,19 +12,19 @@ function signOut(props){
 
 export default function Header(props){
 
-    console.log(props.currentUser);
+    console.log(props.currentUser.username);
     //console.log(props.showUser);
 
     return(
         <div className="root">
             <div className="header-buttons">
-                <button className="btn btn-secondary" onClick={() => props.goTo('home')}>Home</button>
+                <a className="header-link" href='#' onClick={() => props.goTo('home')}>Home</a>
                 <div>
-                    <p>You are logged in as: {props.currentUser}</p>
-                    {!props.currentUser && <button className="btn btn-primary" onClick={() => props.goTo('login')}>Login</button>}
-                    {!props.currentUser && <button className="btn btn-primary" onClick={() => props.goTo('register')}>Register</button>}
-                    {props.currentUser && <button className="btn btn-primary" onClick={signOut}>Log out</button>}
-                    {props.currentUser && <button className="btn btn-primary" onClick={() => props.goTo('userpage')}>My page</button>}
+                    <p>You are logged in as: {props.currentUser.username}</p>
+                    {!props.currentUser && <a className="header-link" href='#' onClick={() => props.goTo('login')}>Login</a>}
+                    {!props.currentUser && <a className="header-link" href='#' onClick={() => props.goTo('register')}>Register</a>}
+                    {props.currentUser && <a className="header-link" href='#' onClick={signOut}>Log out</a>}
+                    {props.currentUser && <a className="header-link" href='#' onClick={() => props.goTo('userpage')}>My page</a>}
                 </div>
             </div>
             <h1 className="heading">CHALLENGER!</h1>

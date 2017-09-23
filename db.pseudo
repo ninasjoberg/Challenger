@@ -32,8 +32,6 @@ users: {
 }
 
 
-
-
 challenges: {
     1:{
         createdBy: username,
@@ -42,14 +40,44 @@ challenges: {
         publishedDate: 20-08-17,
         endDate: 20-02-18,
         NumberOfParticipant: 20,  
-        commentsId: true,
+        category: ''
     }
 }
 
+
 challengeComments: {
-     1:{
+    1:{
         createdBy: username,
         comment: 'göig',
         challengeId: 2,
+        commentedBy: userId,
+    },
+    2:{
+        createdBy: username,
+        comment: 'göig',
+        challengeId: 4,
+        commentedBy: userId,
+    } 
+    3:{
+        createdBy: username,
+        comment: 'göig',
+        challengeId: 2,
+        commentedBy: userId,
     }
 }
+
+
+categories:{
+    physical: {
+        challenge: id,
+        challenge: id,
+    },
+    mental: {
+        challenge: id,
+        challenge: id,
+    },
+    social: {
+        challenge: id,
+        challenge: id,
+    },
+

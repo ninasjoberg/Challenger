@@ -9,6 +9,7 @@ export default class ChallengesList extends Component{
 
     state = {
         challenges: [],
+        //acceptedChallenges: []
     }
 
     componentDidMount(){
@@ -19,28 +20,42 @@ export default class ChallengesList extends Component{
         })
     }
 
+    acceptChallenge = (item) => {
+        db.ref(`users/${this.props.currentUser}/acceptedChallenges`)
+        .push(item)
+    }
+
     
     render(){
 
-        let listOfChallenges = [];
+        
+        let listOfChallenges = this.state.challenges.map((item, index) => {
+            return 
+        })
+
+        /*
         if(this.props.currentUser){
             this.state.challenges.filter((item) =>{
                 return item.value.createdBy === this.props.currentUser;
             }).map((item, index) => {
-                listOfChallenges.push(<Challenge key={index} heading={item.value.heading} description={item.value.description} user={this.state.user}></Challenge>);
+                listOfChallenges.push(<Challenge key={index} heading={item.value.heading} description={item.value.description} createdBy={item.value.createdBy} currentUser={this.props.currentUser}></Challenge>);
                 console.log(item.value.heading);
-                return <Challenge key={index} heading={item.value.heading} description={item.value.description} user={this.state.user}></Challenge>
+                return <Challenge key={index} heading={item.value.heading} description={item.value.description} createdBy={item.value.createdBy} currentUser={this.props.currentUser}></Challenge>
             })
         }
         else{
             this.state.challenges.map((item, index) => {
-                listOfChallenges.push(<Challenge key={index} heading={item.value.heading} description={item.value.description} user={this.state.user}></Challenge>);                
+                listOfChallenges.push(<Challenge key={index} heading={item.value.heading} description={item.value.description} createdBy={item.value.createdBy} currentUser={this.props.currentUser} isLoggedIn={this.props.isLoggedIn} onClick={() => this.acceptChallenge(item)}></Challenge>);                
                 console.log(item.value.heading);
-                return <Challenge key={index} heading={item.value.heading} description={item.value.description} user={this.state.user}></Challenge>
+                return <Challenge key={index} heading={item.value.heading} description={item.value.description} createdBy={item.value.createdBy} currentUser={this.props.currentUser} isLoggedIn={this.props.isLoggedIn} onClick={() => this.acceptChallenge(item)}></Challenge>
             })
         }
+        */
+
 
         console.log(listOfChallenges);
+        console.log(this.state.acceptedChallenges);
+        console.log(this.props.currentUser);
 
         return(
             <div>

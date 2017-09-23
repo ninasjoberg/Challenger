@@ -29,7 +29,8 @@ export default class App extends Component {
       if(user) {
           const newUser = {
               email: user.email,
-              //username: user.displayName //<-- kolla hur man lagrar username, displayname? 
+              username: user.displayName,
+              userId: user.uid
           }
           this.setState({currentUser: newUser});
       }else{
@@ -47,12 +48,14 @@ export default class App extends Component {
 
   render() {
 
+    console.log(this.state.currentUser.username);
+
     const Page = routes[this.state.currentPage];
 
     return (
       <div className="App">
-        <Header goTo={this.changePage} currentUser={this.state.currentUser.email}/>
-        <Page goTo={this.changePage} currentUser={this.state.currentUser.email}/>
+        <Header goTo={this.changePage} currentUser={this.state.currentUser}/>
+        <Page goTo={this.changePage} currentUser={this.state.currentUser}/>
       </div>
     );
   }
