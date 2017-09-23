@@ -31,32 +31,13 @@ export default class RegisterForm extends Component{
 
     //lägger till det som skrivs i inputfälten i statet
     onChange = (event) => {
-            this.setState({[event.target.name]: event.target.value})
+        this.setState({[event.target.name]: event.target.value})
     }
 
 
     submitForm = (event) => {
         event.preventDefault(); //<-- så att inte infon skickas iväg o sidan laddas om, då detta kommer gäras med state ist
         
-        firebase.auth()
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)//skapar en envändare i firebase Authentication
-        
-        /*
-        .then((user) => {
-            user.updateProfile({
-                displayName: this.state.username,
-            })
-        })  
-        */  
-        .then((user) => {
-            firebase.database() //för att lagra användarinfo i själva databasen! här lagrar vi användarens email under users
-            .ref(`users/${user.uid}`)
-            .set({email: user.email, uid: user.uid /*, username: user.displayName*/}) //om ett värde inte finns komer det bli null i firebase
-        })
-        .catch(error => console.log(error))
-
-
-
         let usernameMess = '';
         let passwordMess = '';
         let emailMess = '';
@@ -91,22 +72,37 @@ export default class RegisterForm extends Component{
             console.log(this.state.username);
             console.log(this.state.password);
             console.log(this.state.email);
-            this.setState({loginMess: 'You are logged in as ' + this.state.username})
         }
         
         this.setState({errorUsername: usernameMess})
         this.setState({errorPassword: passwordMess})
         this.setState({errorEmail: emailMess})
         this.setState({error: error})
+        
+        firebase.auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)//skapar en envändare i firebase Authentication 
+        .then((user) => {
+            user.updateProfile({
+                displayName: this.state.username,
+            }).then(() => {
+                firebase.database() //för att lagra användarinfo i själva databasen! här lagrar vi användarens email under users
+                .ref(`users/${user.uid}`)
+                .set({email: user.email, uid: user.uid, username: user.displayName}); //om ett värde inte finns komer det bli null i firebase
+            })
+        })
+        .catch(error => console.log(error))
 
 
-        this.setState({welcomeMessage: 'Welcome, you are now logged in as ' + this.state.username})
+        this.setState({welcomeMessage: 'Welcome, you are now logged in as ' + this.state.user.displayName})        
     }
 
 
     render() {
 
-        
+        console.log(this.state.user);
+        console.log(this.props.currentUser);
+        console.log(this.state.user.displayName);
+
 
        const hasError = this.state.error ? 'has-danger' : ''; //för att använda oss utav bootstrapklassen 'has-danger' om vå får ett error        
        const usernameMessage = this.state.errorUsername;

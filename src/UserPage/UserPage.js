@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import firebase from '../Firebase.js';
 import './UserPage.css';
-import ChallengesList from '../ChallengesList.js';
+import Challenge from '../Challenge/Challenge.js';
+import NavTab from '../NavTab.js';
+import DayPicker from '../DayPicker.js';
+
+
 
 const db = firebase.database(); //för att slippa skriva ut hela grejen varje gång nedan. nu kan vi använda bara db
 
@@ -11,8 +15,33 @@ export default class UserPage extends Component {
     state = {
         heading: '',
         description: '',
-        challenges: []
+        challenges: [],
+        acceptedChallenges: [],
+        completedChallenges: [],
+        selectedDay: '',
+        category: ''
     }
+
+
+    componentDidMount(){
+        //hämtar alla förändringar byt till den uppdelade varianten??   
+        db.ref(`challenges`).on('value', (snapshot) => {
+            const challenges = toArray(snapshot.val()); //toArray = en egenskapad funktion som gör obj till array
+            this.setState({challenges: challenges})
+        })
+
+        db.ref(`users/${this.props.currentUser.userId}/acceptedChallenges`).on('value', (snapshot) => {
+            const acpChallenges = toArray(snapshot.val()); //toArray = en egenskapad funktion som gör obj till array
+            this.setState({acceptedChallenges: acpChallenges})
+        })
+
+        db.ref(`users/${this.props.currentUser.userId}/completedChallenge`).on('value', (snapshot) => {
+            const compChallenges = toArray(snapshot.val()); //toArray = en egenskapad funktion som gör obj till array
+            this.setState({completedChallenges: compChallenges})
+        })
+    }
+
+
 
 
     addChallenge = (event) => {
@@ -26,29 +55,69 @@ export default class UserPage extends Component {
         const challenge = {
             heading: this.state.heading,
             description: this.state.description,
-            createdBy: this.props.currentUser
+            createdBy: this.props.currentUser.username,
+            category: this.state.category,
+            endDate: this.state.selectedDay
         }
         db.ref('challenges')
         .push(challenge)
-        .then(this.setState({heading: '', description: ''}))
+        .then(this.setState({heading: '', description: '', endDate: '', category: ''}))
     }
+
+
+    handleDayClick = (event) => {
+        console.log(event);
+        let endDate = Date.parse(event)
+        this.setState({selectedDay: endDate})
+    }
+
+    addCategory = (event) => {
+        console.log(event.target.name);
+        this.setState({category: event.target.name})
+    }
+
+    completedChallenge = (item) => {
+
+        console.log(item);
+
+        const completedChallenge = {
+            challengeId: item.key,
+            heading: item.value.heading,
+            description: item.value.description,
+            createdBy: item.value.createdBy,
+            endDate: item.value.endDate,
+            category: item.value.category
+        }
+
+        db.ref(`users/${this.props.currentUser.userId}/completedChallenge`)
+        .push(completedChallenge)
+    }
+
+   
 
     render(){
 
-        const listOfChallenges = this.state.challenges.map((item, index) => {
-            console.log(item.value.heading);
-            return <li>
-                <p>{item.value.heading}</p>
-            </li>
+        const usersCreatedChallenges = this.state.challenges.filter((item)=> {
+            return item.value.createdBy === this.props.currentUser.username;            
+        })
+        .map((item, index) => {
+             return <Challenge key={index} {...item.value}/>
         })
 
-        console.log(this.props);
+        const usersAcceptedChallenges = this.state.acceptedChallenges.map((item, index) => {
+            return <Challenge key={index} {...item.value} type='accepted' onClick={() => {this.completedChallenge(item)}}/>
+        })
 
-      
+        const completedChallenges = this.state.completedChallenges.map((item, index) => {
+            return <Challenge key={index} {...item.value}/>
+        })
+
+        console.log(completedChallenges);
+
 
         return (
             <div>
-                <h1>{this.props.currentUser}'s page</h1>
+                <h1>{this.props.currentUser.username}'s page</h1>
                 <div className="user-page">
                 <aside className="create-challenge">
                     <h5>Create a new challenge</h5>
@@ -61,20 +130,37 @@ export default class UserPage extends Component {
                             <label>Description</label>
                             <textarea type="text" name="description" onChange={this.addChallenge} style={{height: "10rem"}} value={this.state.description}></textarea>
                         </div>
+                        <div>
+                            <p>Has an end date?:</p>
+                            <DayPicker onDayClick={this.handleDayClick}/>
+                        </div>
+                        <div>
+                            <p>Select a category</p>
+                            <a href='#' name='physical' onClick={this.addCategory}>physical</a>
+                            <a href='#' name='mental' onClick={this.addCategory}>mental</a>
+                            <a href='#' name='social' onClick={this.addCategory}>social</a>
+                        </div>
                         <input className="btn btn-primary" type="submit" value="Create" />
                     </form>
                 </aside>
 
-                <article className="my-challenges">
-                    <h5>My accepted challenges:</h5>
-                    <ul>
-
+                <article className="userPage-main">
+                    <ul className="nav nav-tabs">
+                        <NavTab role="presentation" class="active" type='accepted' onClick={this.filterCategory}/>
+                        <NavTab role="presentation" type='completed' onClick={this.filterCategory}/>
+                        <NavTab role="presentation" type='created by Me' onClick={this.filterCategory}/>
                     </ul>
-
-                    <h5>Challenges created by Me:</h5>
-                    <ul>
-                        <ChallengesList currentUser={this.props.currentUser}/>
-                    </ul>
+                    <div className="users-Challenges">
+                        <ul>
+                            {usersAcceptedChallenges}
+                        </ul>
+                        <ul>
+                            {usersCreatedChallenges}
+                        </ul>
+                        <ul>
+                            {completedChallenges}
+                        </ul>
+                    </div>
                 </article>
                 </div>
             </div>
@@ -83,3 +169,10 @@ export default class UserPage extends Component {
 }
 
 
+function toArray(firebaseObj){
+    let array = [];
+    for(let item in firebaseObj){
+      array.push({key: item, value: firebaseObj[item]}) //här måste man sätta varje enskilt objekt till value för att sen enkelt komma åt alla värden 
+    }
+    return array;
+  }
