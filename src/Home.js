@@ -12,18 +12,26 @@ export default class Home extends Component{
 
 
     state = {
-        allChallenges: [],
-        selectedCategory: 'all'
+        selectedCategory: 'all',
+        acceptedChallenges: [],
+        completedChallenges: []
     }
-
 
     componentDidMount(){
-        //hämtar alla förändringar byt till den uppdelade varianten??   
-        db.ref(`challenges`).on('value', (snapshot) => {
-            const allChallenges = toArray(snapshot.val()); //toArray = en egenskapad funktion som gör obj till array
-            this.setState({allChallenges: allChallenges})
+        
+        //gör detta med map o filter i react ist?? Duplicerad kod från UserPage.js!!
+
+        db.ref(`users/${this.props.currentUser.userId}/acceptedChallenges`).on('value', (snapshot) => {
+            const acpChallenges = toArray(snapshot.val()); //toArray = en egenskapad funktion som gör obj till array
+            this.setState({acceptedChallenges: acpChallenges})
+        })
+
+        db.ref(`users/${this.props.currentUser.userId}/completedChallenge`).on('value', (snapshot) => {
+            const compChallenges = toArray(snapshot.val()); //toArray = en egenskapad funktion som gör obj till array
+            this.setState({completedChallenges: compChallenges})
         })
     }
+
 
     acceptChallenge = (item) => {
 
@@ -38,37 +46,49 @@ export default class Home extends Component{
 
         db.ref(`users/${this.props.currentUser.userId}/acceptedChallenges`)
         .push(acceptedChallenge)
+
+        db.ref(`challenges/${item.key}/acceptedBy`)
+        .push(this.props.currentUser.username)
     }
 
     filterCategory = (event) => {
-        console.log(event.target.type);
         this.setState({selectedCategory: event.target.type})
         
     }
 
 
     render(){
+        const challengesList = this.props.challenges.map((item, index) => {
 
-        const challengesList = this.state.allChallenges.map((item, index) => {
-            return <Challenge key={index} {...item.value} user={this.props.currentUser} onClick={() => {this.acceptChallenge(item)}}/>
+            const found = toArray(item.value.acceptedBy).find((accepted) => {
+                console.log(accepted);
+                return accepted.value === this.props.currentUser.username; 
+            })
+            if(found){
+                console.log(found);
+                return <Challenge key={index} {...item.value} user={this.props.currentUser} accepted='true' onClick={() => {this.acceptChallenge(item)}}/>
+            }
+            else{
+                return <Challenge key={index} {...item.value} user={this.props.currentUser} accepted='false' onClick={() => {this.acceptChallenge(item)}}/>
+            }
         })
 
-        const challengesListByCategory = this.state.allChallenges.filter((item) => {
+
+        const challengesListByCategory = this.props.challenges.filter((item) => {
             return item.value.category === this.state.selectedCategory;
         }) 
         .map((item, index) => {
             return <Challenge key={index} {...item.value} user={this.props.currentUser} onClick={() => {this.acceptChallenge(item)}}/>
         })
 
-        console.log(this.state.selectedCategory);
 
         return(
             <div className="home-main">
                 <ul className="nav nav-tabs">
-                    <NavTab role="presentation" class="active" type='all' onClick={this.filterCategory}/>
-                    <NavTab role="presentation" type='mental' onClick={this.filterCategory}/>
-                    <NavTab role="presentation" type='physical' onClick={this.filterCategory}/>
-                    <NavTab role="presentation" type='social' onClick={this.filterCategory}/>
+                    <NavTab role="presentation" type='all' selectedType={this.state.selectedCategory} onClick={this.filterCategory}/>
+                    <NavTab role="presentation" type='mental' selectedType={this.state.selectedCategory} onClick={this.filterCategory}/>
+                    <NavTab role="presentation" type='physical' selectedType={this.state.selectedCategory} onClick={this.filterCategory}/>
+                    <NavTab role="presentation" type='social' selectedType={this.state.selectedCategory} onClick={this.filterCategory}/>
                 </ul>
                 <div className="home-challenges">
                     <ul>

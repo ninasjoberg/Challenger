@@ -12,7 +12,7 @@ export default function challenge(props){
 
     let buttonColor = '';
     if(props.category === 'physical'){
-        buttonColor = 'blue';
+        buttonColor = 'green';
     }
     if(props.category === 'mental'){
         buttonColor = 'orange';
@@ -33,7 +33,8 @@ export default function challenge(props){
             <div className="challenge-buttomNav">
                 {props.endDate && <p>End date: {endDate}</p>}
                 <p>Created by: {props.createdBy}</p>
-                {props.user && <a className="accept-click" href='#' onClick={props.onClick}>Accept callenge</a>}
+                {props.user && props.accepted === 'false' && <a className="accept-click" href='#' onClick={props.onClick}>Accept callenge</a>}
+                {props.user && props.accepted === 'true' && <p>Accepted</p>}
                 {props.type === 'accepted' && <a className="complete-click" href='#' onClick={props.onClick}>Completed</a>}
             </div>
         </li>

@@ -12,19 +12,17 @@ function signOut(props){
 
 export default function Header(props){
 
-    console.log(props.currentUser.username);
-    //console.log(props.showUser);
 
     return(
         <div className="root">
             <div className="header-buttons">
                 <a className="header-link" href='#' onClick={() => props.goTo('home')}>Home</a>
                 <div>
-                    <p>You are logged in as: {props.currentUser.username}</p>
+                    {props.currentUser && <p>You are logged in as: {props.currentUser.username}</p>}
                     {!props.currentUser && <a className="header-link" href='#' onClick={() => props.goTo('login')}>Login</a>}
                     {!props.currentUser && <a className="header-link" href='#' onClick={() => props.goTo('register')}>Register</a>}
-                    {props.currentUser && <a className="header-link" href='#' onClick={signOut}>Log out</a>}
                     {props.currentUser && <a className="header-link" href='#' onClick={() => props.goTo('userpage')}>My page</a>}
+                    {props.currentUser && <a className="header-link" href='#' onClick={signOut}>Log out</a>}
                 </div>
             </div>
             <h1 className="heading">CHALLENGER!</h1>
