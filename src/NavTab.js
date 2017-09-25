@@ -3,36 +3,37 @@ import './NavTab.css';
 
 export default function NavTab (props){
 
-    let buttonColor = '';
+    let buttonColor = 'nav-link ';
     if(props.type === 'physical'){
-        buttonColor = 'blue';
+        buttonColor += 'green';
     }
     if(props.type === 'mental'){
-        buttonColor = 'orange';
+        buttonColor += 'orange';
     }
     if(props.type === 'social'){
-        buttonColor = 'purple';
+        buttonColor += 'purple';
     }
     if(props.type === 'all'){
-        buttonColor = 'grey';
+        buttonColor += 'grey';
     }
     if(props.type === 'accepted'){
-        buttonColor = 'red';
+        buttonColor += 'red';
     }
     if(props.type === 'completed'){
-        buttonColor = 'green';
+        buttonColor += 'blue';
     }
     if(props.type === 'created by Me'){
-        buttonColor = 'yellow';
+        buttonColor += 'yellow';
     }
-  
 
-    console.log(props.type);
-    console.log(buttonColor);
+    if(props.selectedType === props.type){
+        buttonColor += ' active';
+    }
+
 
     return(        
         <li className={`nav-item`} role={props.role} onClick={props.onClick}>
-            <a className={`nav-link ${buttonColor}`} href='#' type={props.type}>{props.type}</a>
+            <a className={buttonColor} href='#' type={props.type}>{props.type}</a>
         </li>
     )
 
