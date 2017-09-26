@@ -59,13 +59,10 @@ export default class Home extends Component{
 
     render(){
         const challengesList = this.props.challenges.map((item, index) => {
-
             const found = toArray(item.value.acceptedBy).find((accepted) => {
-                console.log(accepted);
                 return accepted.value === this.props.currentUser.username; 
             })
             if(found){
-                console.log(found);
                 return <Challenge key={index} {...item.value} user={this.props.currentUser} accepted='true' onClick={() => {this.acceptChallenge(item)}}/>
             }
             else{
