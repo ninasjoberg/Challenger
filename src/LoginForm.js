@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import firebase from './Firebase.js';
+import GoogleSignIn from './GoogleSignIn.js';
+
 
 
 export default class LoginForm extends Component{
@@ -7,6 +9,7 @@ export default class LoginForm extends Component{
     state = {
         email: '',
         password: '',
+        error: ''
     }
 
 
@@ -18,18 +21,51 @@ export default class LoginForm extends Component{
     signIn = (event) => {
         event.preventDefault(); //<-- så att inte infon skickas iväg o sidan laddas om, då detta kommer gäras med state ist
         
-        firebase
-        .auth()
+        firebase.auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .catch(error => console.log(error));        
+        .then((user) => {
+            if(user){
+                this.setState({error: ''})
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            this.setState({error: error.code})
+        });    
+    }
+
+    getErrorMessage = (err) => {
+       
+        let msg = [];        
+        if(err === 'auth/wrong-password'){
+            msg.push('Wrong Password');
+        }
+        if(err === 'auth/user-not-found'){
+           msg.push('User not found');
+        }
+        if(err === 'auth/invalid-email'){
+            msg.push('Invalid email-address');
+        }
+        
+        if(msg.length === 0 && err) {
+            msg.push('Something went wrong.');
+        }
+
+        return msg;
+        
     }
 
 
-   render(){
+   render() {
+        let errorMessage = this.getErrorMessage(this.state.error); 
+
+
 
         return (
             <div>
-                <h1>Login</h1>
+                {!this.props.currentUser && <h1>Login</h1>}
+                {this.props.currentUser && <h1>You are now logged in as: {this.props.currentUser.username}</h1>}
+                {errorMessage.length != 0 &&  errorMessage.map((error) => <p>{error}</p>)}
                 <form onSubmit={this.signIn} style ={{maxWidth: "50%", margin: "5rem auto"}}>
                     <div>
                         <label htmlFor="email">email-address</label>
@@ -41,8 +77,9 @@ export default class LoginForm extends Component{
                     </div>
                     <input className="btn btn-primary" type="submit" value="Login" />
                 </form>
-                {firebase.auth().currentUser && <p>You are logged in as: {this.props.currentUser}</p>}
                 {this.state.user && <button onClick={() => this.props.goTo('userpage')}>My page</button>}
+
+                <GoogleSignIn />
             </div>
         );
     }

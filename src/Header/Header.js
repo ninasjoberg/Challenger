@@ -7,6 +7,9 @@ function signOut(props){
     firebase
     .auth()
     .signOut()
+    .then(() => {
+        props.goTo('home')
+    })
     .catch(error => console.log(error));  
 }
 
@@ -22,7 +25,7 @@ export default function Header(props){
                     {!props.currentUser && <a className="header-link" href='#' onClick={() => props.goTo('login')}>Login</a>}
                     {!props.currentUser && <a className="header-link" href='#' onClick={() => props.goTo('register')}>Register</a>}
                     {props.currentUser && <a className="header-link" href='#' onClick={() => props.goTo('userpage')}>My page</a>}
-                    {props.currentUser && <a className="header-link" href='#' onClick={signOut}>Log out</a>}
+                    {props.currentUser && <a className="header-link" href='#' onClick={() => signOut(props)}>Log out</a>}
                 </div>
             </div>
             <h1 className="heading">CHALLENGER!</h1>

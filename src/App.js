@@ -26,29 +26,31 @@ export default class App extends Component {
     challengesList: [],
   }
 
-  //hämtar automatiskt alla förändingar i auth (inloggning & reg.) från firebase
-  componentDidMount(){
-    firebase.auth().onAuthStateChanged((user) => {
-      if(user) {
-          const newUser = {
-              email: user.email,
-              username: user.displayName,
-              userId: user.uid
-          }
-          this.setState({currentUser: newUser});
-      }else{
-          console.log('something went wrong');
-          this.setState({currentUser: ''});
+
+  //bryter ut denna funktion så att detta kan köras när jag exempelvis registrerat en ny användare
+  onUserReady = (user) => {    
+    if(user && user.displayName) {
+      const newUser = {
+          email: user.email,
+          username: user.displayName,
+          userId: user.uid
       }
-    })
+      this.setState({currentUser: newUser});
+    }
+    else{
+      this.setState({currentUser: ''});
+      
+    }
+  }
 
-
+  //hämtar automatiskt alla förändingar i auth (inloggning & reg.) från firebase
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(this.onUserReady);
 
 
     //Lyssnar på när ett nytt objekt eller värde pushas in i vår databas. callback returnerar det tillagda objektet
     db.ref('challenges').on('child_added', (snapshot) => {
-      console.log(snapshot.val());
-      
+
       const newChallenge = {
         value: snapshot.val(),
         key: snapshot.key
@@ -87,19 +89,15 @@ export default class App extends Component {
 
   render() {
 
-    console.log(this.state.currentUser);
-    console.log(this.state.challengesList);
 
-
-    console.log(this.state.completedChallenges);
-    console.log(this.state.acceptedChallenges);
+    console.log(`##### ${this.state.currentUser}`);
 
     const Page = routes[this.state.currentPage];
 
     return (
       <div className="App">
         <Header goTo={this.changePage} currentUser={this.state.currentUser}/>
-        <Page goTo={this.changePage} currentUser={this.state.currentUser} challenges={this.state.challengesList}/>
+        <Page goTo={this.changePage} currentUser={this.state.currentUser} challenges={this.state.challengesList} userToDb={this.onUserReady}/>
       </div>
     );
   }

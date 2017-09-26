@@ -1,11 +1,9 @@
-.home-main{
-    width: 60%;
-    margin: 0 auto;
-}
+.home-main {
+  width: 60%;
+  margin: 0 auto; }
 
-.home-challenges{
-    background-color: white;
-    min-height: 100%;
-    border: 1px solid lightgrey;
-    padding-top: 2rem;
-}
+.home-challenges {
+  background-color: white;
+  min-height: 100%;
+  border: 1px solid lightgrey;
+  padding-top: 2rem; }
