@@ -1,5 +1,6 @@
 .category-button {
-  width: 5rem; }
+  width: 5rem;
+  border: 1px solid lightgray; }
 
 .purple {
   background-color: #C282B3;
@@ -15,16 +16,4 @@
 
 .grey {
   background-color: lightgray;
-  color: white; }
-
-.red {
-  background-color: #C85B70;
-  color: white; }
-
-.yellow {
-  background-color: #FFD109;
-  color: white; }
-
-.blue {
-  background-color: #75B4E7;
   color: white; }

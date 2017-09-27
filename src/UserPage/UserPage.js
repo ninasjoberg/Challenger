@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import firebase from '../Firebase.js';
 import './UserPage.css';
 import Challenge from '../Challenge/Challenge.js';
-import NavTab from '../NavTab.js';
-import CreateChallangeForm from '../CreateChallangeForm.js'
+import NavTab from '../Tabs/NavTab.js';
+import CreateChallengeForm from '../Challenge/CreateChallengeForm.js'
 
 
 
@@ -15,14 +15,13 @@ export default class UserPage extends Component {
     state = {
         heading: '',
         description: '',
-        acceptedChallenges: [],
-        completedChallenges: [],
         selectedDay: '',
         category: '',
-        selectedType: 'accepted'
+        selectedType: 'accepted', 
+        createNew: 'hidden'
     }
 
-
+/*
     componentDidMount(){
 
         //gör detta med map o filter i react ist??
@@ -37,7 +36,7 @@ export default class UserPage extends Component {
             this.setState({completedChallenges: compChallenges})
         })
     }
-
+*/
 
 
     addChallenge = (event) => {
@@ -62,20 +61,16 @@ export default class UserPage extends Component {
 
 
     handleDayClick = (event) => {
-        console.log(event);
         let endDate = Date.parse(event)
         this.setState({selectedDay: endDate})
     }
 
     addCategory = (event) => {
-        console.log(event.target.name);
+        event.preventDefault();
         this.setState({category: event.target.name})
     }
 
     completedChallenge = (item) => {
-
-        console.log(item);
-
         const completedChallenge = {
             challengeId: item.key,
             heading: item.value.heading,
@@ -87,11 +82,18 @@ export default class UserPage extends Component {
 
         db.ref(`users/${this.props.currentUser.userId}/completedChallenges`)
         .push(completedChallenge)
+
+        db.ref(`challenges/${item.key}/completedBy`)
+        .push(this.props.currentUser.username)
     }
 
     
     filteType = (event) => {
         this.setState({selectedType: event.target.type})
+    }
+
+    createNew = (value) => {
+        this.setState({createNew: value})
     }
 
 
@@ -100,48 +102,73 @@ export default class UserPage extends Component {
     render(){
 
         const usersCreatedChallenges = this.props.challenges.filter((item)=> { 
-            console.log(item.value.createdBy);
-            console.log(this.props.currentUser.username);
             return item.value.createdBy === this.props.currentUser.username;            
         }).map((item, index) => {
-             return <Challenge key={index} {...item.value}/>
+             return <Challenge key={index} {...item.value} user={this.props.currentUser} />
         })
 
 
-        const usersAcceptedChallenges = this.state.acceptedChallenges.map((item, index) => {
-            return <Challenge key={index} {...item.value} type='accepted' onClick={() => {this.completedChallenge(item)}}/>
+
+        const usersAcceptedChallenges = this.props.challenges.map((item, index) => {
+            const accepted = toArray(item.value.acceptedBy).find((accepted) => {
+                return accepted.value === this.props.currentUser.username;
+            })
+            if(accepted){
+                return <Challenge key={index} {...item.value} user={this.props.currentUser} type='accepted' onClick={() => {this.completedChallenge(item)}}/>  
+            }else{
+                return null;
+            }
         })
 
 
-        const completedChallenges = this.state.completedChallenges.map((item, index) => {
-            return <Challenge key={index} {...item.value}/>
+        const completedChallenges = this.props.challenges.map((item, index) => {
+            const completed = toArray(item.value.completedBy).find((completed) => {
+                return completed.value === this.props.currentUser.username;
+            })
+            if(completed){
+                return <Challenge key={index} {...item.value} user={this.props.currentUser} />
+            }else{
+                return null;                
+            }
         })
 
-        console.log(this.state.completedChallenges);
+
 
         return (
-            <div>
+            <div className="user-page">
                 <h1>{this.props.currentUser.username}'s page</h1>
-                <div className="user-page">
-                    <CreateChallangeForm onSubmit={this.addToDb} onChange={this.addChallenge} valueHead={this.state.heading} valueDesc={this.state.description} onDayClick={this.handleDayClick} addCategory={this.addCategory}/>
+                <div>
+                    <div className="userpage-linkbar">
+                        <a className="userpage-link" href='#' onClick={() => this.props.goTo('home')}>see all challenges</a>
+                        <a className="userpage-link" href='#' onClick={() => this.createNew('visible')}>create new challenge</a>
+                    </div>
+                    <CreateChallengeForm 
+                        onSubmit={this.addToDb} 
+                        onChange={this.addChallenge} 
+                        valueHead={this.state.heading} 
+                        valueDesc={this.state.description} 
+                        onDayClick={this.handleDayClick} 
+                        addCategory={this.addCategory}
+                        className={this.state.createNew}
+                        showHide={this.createNew}
+                    />
+
+                
                     <article className="userPage-main">
                         <ul className="nav nav-tabs">
                             <NavTab role="presentation" type='accepted' selectedType={this.state.selectedType} onClick={this.filteType}/>
                             <NavTab role="presentation" type='completed' selectedType={this.state.selectedType} onClick={this.filteType}/>
                             <NavTab role="presentation" type='created by Me' selectedType={this.state.selectedType} onClick={this.filteType}/>
                         </ul>
-                        <div className="users-Challenges">
+                        <div className="users-Challenges">  
                             <ul>
-                                 {this.state.selectedType == 'accepted' && usersAcceptedChallenges}
-                            </ul>
-                            <ul>
+                                {this.state.selectedType == 'accepted' && usersAcceptedChallenges}
                                 {this.state.selectedType == 'created by Me' && usersCreatedChallenges}
-                            </ul>
-                            <ul>
                                 {this.state.selectedType == 'completed' && completedChallenges}
                             </ul>
                         </div>
                     </article>
+                    
                 </div>
             </div>
         );

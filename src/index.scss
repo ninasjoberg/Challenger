@@ -1,5 +1,15 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+
+
+  @font-face {
+    font-family: 'nunito_sansextralight';
+    src: url('./font_nunito_sans_light/nunitosans-extralight-webfont.woff2') format('woff2'),
+        url('./font_nunito_sans_light/nunitosans-extralight-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    
+  }
+
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase from './Firebase.js';
+import firebase from '../Firebase.js';
 
 let provider = new firebase.auth.GoogleAuthProvider();
 
@@ -19,7 +19,6 @@ function signInGoogle () {
         console.log(user);
 
     }).then((user) => {
-        //hur får jag in denna användare i databasen?? Fel plats??
         firebase.database() //för att lagra användarinfo i själva databasen! här lagrar vi användarens email under users
         .ref(`users/${user.uid}`)
         .set({email: user.email, uid: user.uid, username: user.displayName}); //om ett värde inte finns komer det bli null i firebase

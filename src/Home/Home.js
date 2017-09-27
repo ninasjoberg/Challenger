@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import firebase from './Firebase.js';
+import firebase from '../Firebase.js';
 import './Home.css';
-import Challenge from './Challenge/Challenge.js';
-import NavTab from './NavTab.js';
+import Challenge from '../Challenge/Challenge.js';
+import NavTab from '../Tabs/NavTab.js';
 
 
 const db = firebase.database(); //för att slippa skriva ut hela grejen varje gång nedan. nu kan vi använda bara db
@@ -13,23 +13,6 @@ export default class Home extends Component{
 
     state = {
         selectedCategory: 'all',
-        acceptedChallenges: [],
-        completedChallenges: []
-    }
-
-    componentDidMount(){
-        
-        //gör detta med map o filter i react ist?? Duplicerad kod från UserPage.js!!
-
-        db.ref(`users/${this.props.currentUser.userId}/acceptedChallenges`).on('value', (snapshot) => {
-            const acpChallenges = toArray(snapshot.val()); //toArray = en egenskapad funktion som gör obj till array
-            this.setState({acceptedChallenges: acpChallenges})
-        })
-
-        db.ref(`users/${this.props.currentUser.userId}/completedChallenge`).on('value', (snapshot) => {
-            const compChallenges = toArray(snapshot.val()); //toArray = en egenskapad funktion som gör obj till array
-            this.setState({completedChallenges: compChallenges})
-        })
     }
 
 
@@ -43,7 +26,6 @@ export default class Home extends Component{
             endDate: item.value.endDate,
             category: item.value.category
         }
-
         db.ref(`users/${this.props.currentUser.userId}/acceptedChallenges`)
         .push(acceptedChallenge)
 
@@ -51,25 +33,17 @@ export default class Home extends Component{
         .push(this.props.currentUser.username)
     }
 
+
     filterCategory = (event) => {
         this.setState({selectedCategory: event.target.type})
-        
     }
 
 
     render(){
-        const challengesList = this.props.challenges.map((item, index) => {
-            const found = toArray(item.value.acceptedBy).find((accepted) => {
-                return accepted.value === this.props.currentUser.username; 
-            })
-            if(found){
-                return <Challenge key={index} {...item.value} user={this.props.currentUser} accepted='true' onClick={() => {this.acceptChallenge(item)}}/>
-            }
-            else{
-                return <Challenge key={index} {...item.value} user={this.props.currentUser} accepted='false' onClick={() => {this.acceptChallenge(item)}}/>
-            }
-        })
 
+        const challengesList = this.props.challenges.map((item, index) => {
+            return <Challenge key={index} {...item.value} user={this.props.currentUser} onClick={() => {this.acceptChallenge(item)}}/>
+        })
 
         const challengesListByCategory = this.props.challenges.filter((item) => {
             return item.value.category === this.state.selectedCategory;
