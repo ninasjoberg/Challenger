@@ -1,18 +1,27 @@
 .user-page {
-  display: flex;
-  flex-direction: row; }
+  position: relative;
+  margin: 0 auto;
+  width: 50%; }
+  .user-page h1 {
+    margin-bottom: 1rem; }
+
+.userpage-link {
+  color: #222;
+  padding: 0.5rem;
+  margin-bottom: 2rem; }
+
+.userpage-linkbar {
+  margin-bottom: 4rem; }
 
 .userPage-main {
-  width: 80%; }
+  margin-top: 2rem;
+  margin: auto; }
 
 .users-Challenges {
-  background-color: white; }
+  background-color: white;
+  min-height: 100%;
+  border: 1px solid lightgrey;
+  padding-top: 2rem; }
 
 h1 {
   width: 100%; }
-
-.create-challenge {
-  align-self: flex-start;
-  flex-direction: column;
-  width: 20%;
-  border: 1px solid lightgrey; }

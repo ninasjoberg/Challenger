@@ -1,10 +1,19 @@
-.root {
-  margin-bottom: 6rem; }
+@font-face {
+  font-family: 'nunito_sansextralight';
+  src: url("../font_nunito_sans_light/nunitosans-extralight-webfont.woff2") format("woff2"), url("../font_nunito_sans_light/nunitosans-extralight-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+
+.header {
+  margin-bottom: 6rem;
+  background-color: #2c3e50;
+  height: 25rem; }
 
 .heading {
+  font-family: 'nunito_sansextralight';
   width: 100%;
   text-align: center;
-  color: #DED8B4;
+  color: white;
   font-size: 3rem;
   letter-spacing: 1.6px; }
 
@@ -12,8 +21,29 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 2rem; }
+  padding: 2rem;
+  font-family: 'nunito_sansextralight';
+  font-weight: 200;
+  letter-spacing: 0.6px; }
+
+.white-text {
+  color: white;
+  letter-spacing: 1.6px; }
+
+.text {
+  font-size: 2rem;
+  width: 50%;
+  margin: 0 auto; }
 
 .header-link {
-  color: #DED8B4;
-  padding: 0.5rem; }
+  padding: 0.5rem;
+  color: white;
+  letter-spacing: 1.6px;
+  font-family: 'nunito_sansextralight'; }
+
+.active {
+  color: #74CCB4; }
+
+.green-text {
+  color: #74CCB4;
+  letter-spacing: 1.6px; }

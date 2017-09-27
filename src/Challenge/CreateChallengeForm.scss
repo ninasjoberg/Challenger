@@ -1,0 +1,44 @@
+
+.create-challenge{
+    min-width: 340px;
+    background-color: white;
+    padding: 2rem 0;
+    align-self: flex-start;
+    flex-direction: column;
+    width: 25%;
+    border: 1px solid lightgrey;
+    position: absolute;
+    margin: 40px auto auto;
+    
+    h5{
+        margin-bottom: 1.5rem;
+    }
+}
+
+.newChallengeForm{
+    min-width: 250px;
+}
+
+
+.create-input{
+    width: 85%;
+    margin: auto;
+    a{
+        color: #222;
+        padding: 0.5rem;
+    }
+}
+
+
+.calendar-background{
+    background-color: white;
+}
+
+.visible{
+    display: block;
+}
+
+
+.hidden{
+    display: none;
+}

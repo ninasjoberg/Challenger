@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase from './Firebase.js';
+import firebase from '../Firebase.js';
 import GoogleSignIn from './GoogleSignIn.js';
 
 
@@ -83,12 +83,6 @@ export default class RegisterForm extends Component{
 
     render() {
 
-        console.log(this.state.user);
-        console.log(this.props.currentUser);
-        console.log(this.state.user.displayName);
-        console.log(this.state.username);
-
-
        const hasError = this.state.error ? 'has-danger' : ''; //för att använda oss utav bootstrapklassen 'has-danger' om vå får ett error        
        const usernameMessage = this.state.errorUsername;
        const passwordMessage = this.state.errorPassword;
@@ -99,7 +93,7 @@ export default class RegisterForm extends Component{
             <div>
                 <h1>Register</h1>
                 {this.props.currentUser && <h2>You are logged in as: {this.props.currentUser.username}</h2>}
-                <form onSubmit={this.submitForm} style ={{maxWidth: "50%", margin: "5rem auto"}}>
+                <form onSubmit={this.submitForm} style ={{maxWidth: "50%", margin: "2rem auto"}}>
                     <div className={`form-group ${hasError}`}>
                         <label htmlFor="username">Username *(at least 8 characthers)</label>
                         <input type="text" className="form-control" name="username" onChange={this.onChange}></input>

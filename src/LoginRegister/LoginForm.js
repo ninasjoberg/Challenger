@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import firebase from './Firebase.js';
+import firebase from '../Firebase.js';
 import GoogleSignIn from './GoogleSignIn.js';
-
 
 
 export default class LoginForm extends Component{
@@ -63,10 +62,10 @@ export default class LoginForm extends Component{
 
         return (
             <div>
-                {!this.props.currentUser && <h1>Login</h1>}
+                {!this.props.currentUser && <h1>Login to accept and create Challenges!</h1>}
                 {this.props.currentUser && <h1>You are now logged in as: {this.props.currentUser.username}</h1>}
                 {errorMessage.length != 0 &&  errorMessage.map((error) => <p>{error}</p>)}
-                <form onSubmit={this.signIn} style ={{maxWidth: "50%", margin: "5rem auto"}}>
+                <form onSubmit={this.signIn} style ={{maxWidth: "50%", margin: "2rem auto"}}>
                     <div>
                         <label htmlFor="email">email-address</label>
                         <input type="text" className="form-control" name="email" onChange={this.onChange}></input>
@@ -78,8 +77,8 @@ export default class LoginForm extends Component{
                     <input className="btn btn-primary" type="submit" value="Login" />
                 </form>
                 {this.state.user && <button onClick={() => this.props.goTo('userpage')}>My page</button>}
-
                 <GoogleSignIn />
+                <a href='#' onClick={() => this.props.goTo('register')}>Register</a>
             </div>
         );
     }

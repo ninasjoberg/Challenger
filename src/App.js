@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import firebase from './Firebase.js';
 import './App.css';
 import Header from './Header/Header.js';
-import Home from './Home.js';
-import LoginForm from './LoginForm.js';
-import RegisterForm from './RegisterForm.js';
+import Home from './Home/Home.js';
+import LoginForm from './LoginRegister/LoginForm.js';
+import RegisterForm from './LoginRegister/RegisterForm.js';
 import UserPage from './UserPage/UserPage.js';
 
 
@@ -29,6 +29,7 @@ export default class App extends Component {
 
   //bryter ut denna funktion så att detta kan köras när jag exempelvis registrerat en ny användare
   onUserReady = (user) => {    
+
     if(user && user.displayName) {
       const newUser = {
           email: user.email,
@@ -45,6 +46,7 @@ export default class App extends Component {
 
   //hämtar automatiskt alla förändingar i auth (inloggning & reg.) från firebase
   componentDidMount() {
+
     firebase.auth().onAuthStateChanged(this.onUserReady);
 
 
@@ -72,8 +74,7 @@ export default class App extends Component {
     db.ref('challenges').on('child_changed', (snapshot) => {
       let updateChallenges = this.state.challengesList.map((item) => {
         if(item.key === snapshot.key){ 
-          console.log(Object.assign({}, item, snapshot.val()));
-          return Object.assign({}, item, snapshot.val()) //Object assign === merge the old object with the new object.
+          return Object.assign({}, item, {value: snapshot.val()}) //Object assign === merge the old object with the new object.
         }else
           return item;
       })
@@ -88,9 +89,6 @@ export default class App extends Component {
 
 
   render() {
-
-
-    console.log(`##### ${this.state.currentUser}`);
 
     const Page = routes[this.state.currentPage];
 

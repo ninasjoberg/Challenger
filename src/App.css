@@ -1,8 +1,6 @@
-body {
-  background-color: #0F7479; }
-
 .App {
-  text-align: center; }
+  text-align: center;
+  font-family: 'nunito_sansextralight'; }
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
