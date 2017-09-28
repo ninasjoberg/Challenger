@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import firebase from '../Firebase.js';
+import firebase from '../util/Firebase.js';
+
 
 let provider = new firebase.auth.GoogleAuthProvider();
-
 
 function signInGoogle () {
     firebase.auth().signInWithRedirect(provider);
@@ -11,17 +11,17 @@ function signInGoogle () {
         if (result.credential) {
           // This gives you a Google Access Token. You can use it to access the Google API.
           var token = result.credential.accessToken;
-          // ...
         }
         // The signed-in user info.
         var user = result.user;
-        return user;
         console.log(user);
+        return user;
 
     }).then((user) => {
-        firebase.database() //för att lagra användarinfo i själva databasen! här lagrar vi användarens email under users
+        //store the user (email, uid and username) data in Firebase database
+        firebase.database()
         .ref(`users/${user.uid}`)
-        .set({email: user.email, uid: user.uid, username: user.displayName}); //om ett värde inte finns komer det bli null i firebase
+        .set({email: user.email, uid: user.uid, username: user.displayName});
     })
       
     .catch(function(error) {
@@ -39,7 +39,6 @@ function signInGoogle () {
 
 
 export default function GoogleSignIn(props){
-
 
     return(
         <div>

@@ -1,8 +1,10 @@
 import React from 'react';
-import firebase from '../Firebase.js';
+import firebase from '../util/Firebase.js';
 import './Header.css';
+import WhiteColoredLink from '../TabsAndLinks/WhiteColoredLink.js'
 
 
+//signout Firebase
 function signOut(props){
     firebase
     .auth()
@@ -15,17 +17,16 @@ function signOut(props){
 
 export default function Header(props){
 
-
     return(
         <div className="header">
-            <div className="header-buttons">
-                <a className="header-link" href='#' onClick={() => props.goTo('home')}>Home</a>
+            <div className="header-links">
+                <WhiteColoredLink title='Home' onClick={() => props.goTo('home')}/>}
                 <div className="white-text">
                     {props.currentUser && <p>You are logged in as: {props.currentUser.username}</p>}
-                    {!props.currentUser && <a className="header-link" href='#' onClick={() => props.goTo('login')}>Login</a>}
-                    {!props.currentUser && <a className="header-link" href='#' onClick={() => props.goTo('register')}>Register</a>}
-                    {props.currentUser && <a activeClassName="active" className="header-link" href='#' onClick={() => props.goTo('userpage')}>My page</a>}
-                    {props.currentUser && <a className="header-link" href='#' onClick={() => signOut(props)}>Log out</a>}
+                    {!props.currentUser && <WhiteColoredLink title='Login' onClick={() => props.goTo('login')}/>}
+                    {!props.currentUser && <WhiteColoredLink title='Register' onClick={() => props.goTo('register')}/>}
+                    {props.currentUser && <WhiteColoredLink title='My page' onClick={() => props.goTo('userpage')}/>}
+                    {props.currentUser && <WhiteColoredLink title='Log out' onClick={() => signOut(props)}/>}
                 </div>
             </div>
             <h1 className="heading">CHALLENGER!</h1>

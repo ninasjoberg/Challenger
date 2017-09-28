@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
-import firebase from '../Firebase.js';
+import firebase from '../util/Firebase.js';
 import './Home.css';
 import Challenge from '../Challenge/Challenge.js';
-import NavTab from '../Tabs/NavTab.js';
+import NavTab from '../TabsAndLinks/NavTab.js';
 
 
-const db = firebase.database(); //för att slippa skriva ut hela grejen varje gång nedan. nu kan vi använda bara db
-
+const db = firebase.database(); //to avoid write firebase.database() all the time in the code, now we can write db instead
 
 export default class Home extends Component{
-
 
     state = {
         selectedCategory: 'all',
     }
 
+    //function that is called when the "accept challange" button is pressed
     acceptChallenge = (item) => {
-        
         const acceptedChallenge = {
             challengeId: item.key,
             heading: item.value.heading,
@@ -24,21 +22,14 @@ export default class Home extends Component{
             createdBy: item.value.createdBy,
             endDate: item.value.endDate,
             category: item.value.category,
-            completed: false
+            completed: false 
         }
 
-        const acceptedBy = {
-            username: this.props.currentUser.username,
-            completed: false
-        }
-
+        //pushes the accepted challenge info to the user's acceptedChallenges list, Firebase
         db.ref(`users/${this.props.currentUser.userId}/acceptedChallenges`)
         .push(acceptedChallenge)
 
-        //lägg in dett ist så att completed kommer med även här? 
-        // db.ref(`challenges/${item.key}/acceptedBy`)
-        // .push(acceptedBy)
-
+        //pushes the username to the acceptedBy list in the current challenge, Firebase
         db.ref(`challenges/${item.key}/acceptedBy`)
         .push(this.props.currentUser.username)
     }
@@ -51,19 +42,18 @@ export default class Home extends Component{
 
     render(){
 
-        console.log(this.props.currentUser);
-
+        //returns a list with styled challenge component for every challenge in the list
         const challengesList = this.props.challenges.map((item, index) => {
             return <Challenge key={index} {...item.value} user={this.props.currentUser} onClick={() => {this.acceptChallenge(item)}}/>
         })
 
+        //returns a list with styled challenge component for every challenge that matches the selected category 
         const challengesListByCategory = this.props.challenges.filter((item) => {
             return item.value.category === this.state.selectedCategory;
         }) 
         .map((item, index) => {
             return <Challenge key={index} {...item.value} user={this.props.currentUser} onClick={() => {this.acceptChallenge(item)}}/>
         })
-
 
         return(
             <div className="home-main">
@@ -83,15 +73,6 @@ export default class Home extends Component{
         );
     }
 }    
-
-
-function toArray(firebaseObj){
-    let array = [];
-    for(let item in firebaseObj){
-      array.push({key: item, value: firebaseObj[item]}) //här måste man sätta varje enskilt objekt till value för att sen enkelt komma åt alla värden 
-    }
-    return array;
-  }
 
 
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase from '../Firebase.js';
+import firebase from '../util/Firebase.js';
 import GoogleSignIn from './GoogleSignIn.js';
 
 
@@ -17,15 +17,16 @@ export default class RegisterForm extends Component{
     }
 
 
-    //lägger till det som skrivs i inputfälten i statet
+    //sets the state based on the name and value from the current inputfield
     onChange = (event) => {
         this.setState({[event.target.name]: event.target.value})
     }
 
 
     submitForm = (event) => {
-        event.preventDefault(); //<-- så att inte infon skickas iväg o sidan laddas om, då detta kommer gäras med state ist
+        event.preventDefault(); //prevent the page to reload when the form is submitted
         
+        //creating errormessages based on input values from the registerform 
         let usernameMess = '';
         let passwordMess = '';
         let emailMess = '';
@@ -55,25 +56,25 @@ export default class RegisterForm extends Component{
             emailMess = 'Not a valid emailadress!';
             error = true;
         }
+        //if we have no errors in the frontEnd, call firebase function create user
         if(error === false){
             firebase.auth()
-            .createUserWithEmailAndPassword(this.state.email, this.state.password)//skapar en envändare i firebase Authentication 
+            .createUserWithEmailAndPassword(this.state.email, this.state.password)//creates a user in firebase Authentication 
             .then((user) => {
-                user.updateProfile({
+                user.updateProfile({ //sets the displayName in Firebase to the username provided by the user during register
                     displayName: this.state.username,
                 }).then(() => {
-                    firebase.database() //för att lagra användarinfo i själva databasen! här lagrar vi användarens email under users
+                    firebase.database() //store the user (email, uid and username) data in Firebase database
                     .ref(`users/${user.uid}`)
                     .set({email: user.email, uid: user.uid, username: user.displayName}); //om ett värde inte finns komer det bli null i firebase
                     return user;
 
                 }).then((user) => {
-                    this.props.userToDb(user);
+                    this.props.setCurrentUser(user); //to call a function in app.js that sets the logged in user to the states currentUser(didn't happen nby default)
                 })
             }).catch(error => console.log(error))
     
         }
-        
         this.setState({errorUsername: usernameMess})
         this.setState({errorPassword: passwordMess})
         this.setState({errorEmail: emailMess})
@@ -83,7 +84,7 @@ export default class RegisterForm extends Component{
 
     render() {
 
-       const hasError = this.state.error ? 'has-danger' : ''; //för att använda oss utav bootstrapklassen 'has-danger' om vå får ett error        
+       const hasError = this.state.error ? 'has-danger' : '';//if we get an error, use the bootstrap className 'has-danger' for styling
        const usernameMessage = this.state.errorUsername;
        const passwordMessage = this.state.errorPassword;
        const emailMessage = this.state.errorEmail;
@@ -93,7 +94,8 @@ export default class RegisterForm extends Component{
             <div>
                 <h1>Register</h1>
                 {this.props.currentUser && <h2>You are logged in as: {this.props.currentUser.username}</h2>}
-                <form onSubmit={this.submitForm} style ={{maxWidth: "50%", margin: "2rem auto"}}>
+                {this.props.currentUser && <p>create a challange at <a href="#" onClick={() => this.props.goTo('userpage')}>My Page</a></p>}
+                <form onSubmit={this.submitForm} style ={{maxWidth: "30%", margin: "2rem auto"}}>
                     <div className={`form-group ${hasError}`}>
                         <label htmlFor="username">Username *(at least 8 characthers)</label>
                         <input type="text" className="form-control" name="username" onChange={this.onChange}></input>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import firebase from '../Firebase.js';
+import firebase from '../util/Firebase.js';
 import GoogleSignIn from './GoogleSignIn.js';
 
 
@@ -11,16 +11,15 @@ export default class LoginForm extends Component{
         error: ''
     }
 
-
+    //sets the state based on the name and value from the current inputfield
     onChange = (event) => {
-        this.setState({[event.target.name] : event.target.value}) //<-- detta kommer fungera för alla inputfält när man skrivit såhär, så länge "name" är samma som något som finns i statet
+        this.setState({[event.target.name] : event.target.value}) 
     }
 
-
     signIn = (event) => {
-        event.preventDefault(); //<-- så att inte infon skickas iväg o sidan laddas om, då detta kommer gäras med state ist
+        event.preventDefault(); //prevent the page to reload when the form is submitted
         
-        firebase.auth()
+        firebase.auth() //logging in a user in firebase Authentication 
         .signInWithEmailAndPassword(this.state.email, this.state.password)
         .then((user) => {
             if(user){
@@ -28,13 +27,12 @@ export default class LoginForm extends Component{
             }
         })
         .catch(error => {
-            console.log(error);
-            this.setState({error: error.code})
+            this.setState({error: error.code}) 
         });    
     }
 
+    //creating error messages based on the messeges from Firebase, handled in the ".catch"
     getErrorMessage = (err) => {
-       
         let msg = [];        
         if(err === 'auth/wrong-password'){
             msg.push('Wrong Password');
@@ -45,27 +43,24 @@ export default class LoginForm extends Component{
         if(err === 'auth/invalid-email'){
             msg.push('Invalid email-address');
         }
-        
         if(msg.length === 0 && err) {
             msg.push('Something went wrong.');
         }
-
         return msg;
-        
     }
 
 
    render() {
+
         let errorMessage = this.getErrorMessage(this.state.error); 
-
-
 
         return (
             <div>
                 {!this.props.currentUser && <h1>Login to accept and create Challenges!</h1>}
                 {this.props.currentUser && <h1>You are now logged in as: {this.props.currentUser.username}</h1>}
+                {this.props.currentUser && <p>create a challange at <a href="#" onClick={() => this.props.goTo('userpage')}>My Page</a></p>}
                 {errorMessage.length != 0 &&  errorMessage.map((error) => <p>{error}</p>)}
-                <form onSubmit={this.signIn} style ={{maxWidth: "50%", margin: "2rem auto"}}>
+                <form onSubmit={this.signIn} style ={{maxWidth: "30%", margin: "2rem auto"}}>
                     <div>
                         <label htmlFor="email">email-address</label>
                         <input type="text" className="form-control" name="email" onChange={this.onChange}></input>
@@ -76,8 +71,8 @@ export default class LoginForm extends Component{
                     </div>
                     <input className="btn btn-primary" type="submit" value="Login" />
                 </form>
-                {this.state.user && <button onClick={() => this.props.goTo('userpage')}>My page</button>}
                 <GoogleSignIn />
+                <p>or</p>
                 <a href='#' onClick={() => this.props.goTo('register')}>Register</a>
             </div>
         );

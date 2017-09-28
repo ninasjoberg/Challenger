@@ -5,11 +5,8 @@ import  './CreateChallengeForm.css'
 
 export default function createChallangeForm (props) {
 
-    console.log(props.error)
-    console.log(props.nameMess)
-    const hasError = props.error ? 'has-danger' : ''; //för att använda oss utav bootstrapklassen 'has-danger' om vå får ett error        
-    
-console.log(props.state);
+    //if we get an error, use the bootstrap className 'has-danger' for styling
+    const hasError = props.error ? 'has-danger' : '';       
 
     return(
         <aside className={`create-challenge ${props.className}`}>
