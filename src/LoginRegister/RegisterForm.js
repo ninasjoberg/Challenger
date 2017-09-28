@@ -44,8 +44,8 @@ export default class RegisterForm extends Component{
             emailMess = 'type in an emailaddress!';
             error = true;
         }    
-        if(this.state.username && this.state.username.length < 8){
-            usernameMess = 'Username must be at least 8 characthers long!';
+        if(this.state.username && this.state.username.length < 2){
+            usernameMess = 'Username must be at least 2 characthers long!';
             error = true;
         }
         if(this.state.password && this.state.password.length < 8){
@@ -97,7 +97,7 @@ export default class RegisterForm extends Component{
                 {this.props.currentUser && <p>create a challange at <a href="#" onClick={() => this.props.goTo('userpage')}>My Page</a></p>}
                 <form onSubmit={this.submitForm} style ={{maxWidth: "30%", margin: "2rem auto"}}>
                     <div className={`form-group ${hasError}`}>
-                        <label htmlFor="username">Username *(at least 8 characthers)</label>
+                        <label htmlFor="username">Username</label>
                         <input type="text" className="form-control" name="username" onChange={this.onChange}></input>
                         {usernameMessage && <div className="form-control-feedback">{usernameMessage}</div>}   
                     </div>
