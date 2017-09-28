@@ -2,14 +2,16 @@
   min-width: 340px;
   background-color: white;
   padding: 2rem 0;
-  align-self: flex-start;
+  display: flex;
   flex-direction: column;
   width: 25%;
   border: 1px solid lightgrey;
-  position: absolute;
   margin: 40px auto auto; }
   .create-challenge h5 {
     margin-bottom: 1.5rem; }
+
+.close-button {
+  margin-left: 15rem; }
 
 .newChallengeForm {
   min-width: 250px; }

@@ -97,17 +97,17 @@ export default class RegisterForm extends Component{
                     <div className={`form-group ${hasError}`}>
                         <label htmlFor="username">Username *(at least 8 characthers)</label>
                         <input type="text" className="form-control" name="username" onChange={this.onChange}></input>
-                        {this.state.errorUsername && <div className="form-control-feedback">{usernameMessage}</div>}   
+                        {usernameMessage && <div className="form-control-feedback">{usernameMessage}</div>}   
                     </div>
                     <div className={`form-group ${hasError}`}>
                         <label htmlFor="email">Email</label>
                         <input type="text" className="form-control" name="email" onChange={this.onChange}></input>
-                        {this.state.errorEmail && <div className="form-control-feedback">{emailMessage}</div>}                               
+                        {emailMessage && <div className="form-control-feedback">{emailMessage}</div>}                               
                     </div>
                     <div className={`form-group ${hasError}`}>
                         <label htmlFor="password">Password *(at least 8 characthers)</label>
                         <input type="password" className="form-control" name="password" onChange={this.onChange}></input>
-                        {this.state.errorPassword && <div className="form-control-feedback">{passwordMessage}</div>}   
+                        {passwordMessage && <div className="form-control-feedback">{passwordMessage}</div>}   
                     </div>
                     <input className="btn btn-primary" type="submit" value="Register"/>
                 </form> 

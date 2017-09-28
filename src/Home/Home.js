@@ -15,19 +15,29 @@ export default class Home extends Component{
         selectedCategory: 'all',
     }
 
-
     acceptChallenge = (item) => {
-
+        
         const acceptedChallenge = {
             challengeId: item.key,
             heading: item.value.heading,
             description: item.value.description,
             createdBy: item.value.createdBy,
             endDate: item.value.endDate,
-            category: item.value.category
+            category: item.value.category,
+            completed: false
         }
+
+        const acceptedBy = {
+            username: this.props.currentUser.username,
+            completed: false
+        }
+
         db.ref(`users/${this.props.currentUser.userId}/acceptedChallenges`)
         .push(acceptedChallenge)
+
+        //lägg in dett ist så att completed kommer med även här? 
+        // db.ref(`challenges/${item.key}/acceptedBy`)
+        // .push(acceptedBy)
 
         db.ref(`challenges/${item.key}/acceptedBy`)
         .push(this.props.currentUser.username)
@@ -40,6 +50,8 @@ export default class Home extends Component{
 
 
     render(){
+
+        console.log(this.props.currentUser);
 
         const challengesList = this.props.challenges.map((item, index) => {
             return <Challenge key={index} {...item.value} user={this.props.currentUser} onClick={() => {this.acceptChallenge(item)}}/>

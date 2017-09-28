@@ -33,8 +33,8 @@
   margin-top: 1rem;
   font-size: 0.8rem; }
 
-.red-text {
+.challenge-red-text {
   color: #C85B70; }
 
-.complete-click {
-  color: #75B4E7; }
+.challenge-green-text {
+  color: #74CCB4; }

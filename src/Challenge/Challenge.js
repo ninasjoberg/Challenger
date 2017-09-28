@@ -24,7 +24,6 @@ export default function challenge(props){
         }
     })
 
-
     let buttonColor = '';
     if(props.category === 'physical'){
         buttonColor = 'green';
@@ -38,6 +37,7 @@ export default function challenge(props){
     if(props.category === 'all'){
         buttonColor = 'grey';
     }
+
     return( 
         <li className="challengeBox">
             <div className={`category-flag ${buttonColor}`}>{props.category}</div>
@@ -46,10 +46,11 @@ export default function challenge(props){
             <div className="challenge-buttomNav">
                 <p>End date: {endDate}</p>
                 <p>Created by: {props.createdBy}</p>
-                <p> AcceptedBy: {toArray(props.acceptedBy).length}</p>
-                {props.user && !isAccepted && <a className="accept-click" href='#' onClick={props.onClick}>Accept callenge</a>}
-                {props.user && isAccepted && <p className="red-text">Accepted</p>}
-                {props.type === 'accepted' && <a className="complete-click" href='#' onClick={props.onClick}>Completed</a>}
+                {props.acceptedBy && <p> AcceptedBy: {toArray(props.acceptedBy).length}</p>} 
+                {!props.type && !isAccepted && props.user && <a className="challenge-green-text" href='#' onClick={props.onClick}>Accept callenge</a>}
+                {(props.type === 'accepted' || isAccepted) && props.user &&  <p className="challenge-red-text">Accepted</p>}
+                {props.type === 'accepted' && <a className="challenge-green-text" href='#' onClick={props.onClick}>Complete</a>}
+                {props.type === 'completed' &&  <p className="challenge-red-text">Completed</p>}
             </div>
         </li>
     )
