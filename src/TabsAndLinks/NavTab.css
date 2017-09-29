@@ -1,6 +1,5 @@
-.category-button {
-  width: 5rem;
-  border: 1px solid lightgray; }
+.nav-link {
+  font-weight: 200; }
 
 .purple {
   background-color: #C282B3;
@@ -17,3 +16,10 @@
 .grey {
   background-color: lightgray;
   color: white; }
+
+.white {
+  background-color: white;
+  color: black; }
+
+button:focus {
+  outline: 0; }

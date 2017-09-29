@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .challengeBox {
   margin: auto;
   margin-bottom: 2rem;
@@ -28,9 +29,21 @@
   justify-content: space-around;
   margin-top: 1rem;
   font-size: 0.8rem; }
+  .challenge-buttomNav p {
+    margin: 0.2rem; }
 
 .challenge-red-text {
   color: #C85B70; }
 
 .challenge-green-text {
   color: #74CCB4; }
+
+/* Medium devices ipad*/
+/* Små skärmar mobil*/
+@media screen and (max-width: 749px) {
+  .challengeBox {
+    width: 95%; }
+  .challenge-heading {
+    margin-top: 1rem; }
+  .challenge-buttomNav {
+    flex-wrap: wrap-reverse; } }

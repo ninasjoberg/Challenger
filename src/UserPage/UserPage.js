@@ -181,7 +181,7 @@ export default class UserPage extends Component {
                         </ul>
                         <div className="users-Challenges">  
                             <ul>
-                                {this.state.selectedType == 'accepted' && noChallenges && <h5>You have no accepted challanges at the moment. <a href='#' onClick={() => this.props.goTo('home')}>Accept a challange!</a> </h5>}
+                                {this.state.selectedType == 'accepted' && noChallenges && <h5>You have no accepted challenges at the moment. <a href='#' onClick={() => this.props.goTo('home')}>Accept a challenge!</a> </h5>}
                                 {this.state.selectedType == 'accepted' && usersAcceptedChallenges}
                                 {this.state.selectedType == 'created by Me' && usersCreatedChallenges}
                                 {this.state.selectedType == 'completed' && completedChallenges}

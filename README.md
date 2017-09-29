@@ -29,10 +29,12 @@ Login to create challenges and let other people to accept your challenges. Accep
 
 ## Suggestions for future functionality / improvements:
 
+- better navigation, like link to create challenge also at the home/startpage
 - let users make comments on the challenges
-- send a challenge directly to an other user
+- let users leave a comment when they completed the challenge
 - if there is and end-date at the challenge, take it away from the homepage after the expiration date
+- send a challenge directly to an other user
 - show which users has accepted a challenge
-- responsive design!
+
 
 

@@ -1,8 +1,7 @@
-.category-button{
-    width: 5rem;
-    border: 1px solid lightgray;
-}
 
+.nav-link{
+    font-weight: 200;
+}
 .purple{
     background-color: #C282B3;
     color: white;
@@ -25,20 +24,15 @@
     color: white;
 }
 
-
-.red{
-    //background-color: #C85B70;
-    //color: white;
-}
-
-.yellow{
-    //background-color: #FFD109;
-    //color: white;
+.white{
+    background-color: white;
+    color: black;
 }
 
 
-.blue{
-    //background-color: #75B4E7;
-   // color: white;
+button:focus {
+    outline:0;
 }
+
+
 

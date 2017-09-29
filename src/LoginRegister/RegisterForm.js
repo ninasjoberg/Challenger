@@ -95,7 +95,7 @@ export default class RegisterForm extends Component{
                 <h1>Register</h1>
                 {this.props.currentUser && <h2>You are logged in as: {this.props.currentUser.username}</h2>}
                 {this.props.currentUser && <p>create a challange at <a href="#" onClick={() => this.props.goTo('userpage')}>My Page</a></p>}
-                <form onSubmit={this.submitForm} style ={{maxWidth: "30%", margin: "2rem auto"}}>
+                <form onSubmit={this.submitForm} style ={{width: "30%", minWidth: "300px", margin: "2rem auto"}}>
                     <div className={`form-group ${hasError}`}>
                         <label htmlFor="username">Username</label>
                         <input type="text" className="form-control" name="username" onChange={this.onChange}></input>

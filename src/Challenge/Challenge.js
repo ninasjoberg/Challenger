@@ -40,7 +40,7 @@ export default function challenge(props){
     return( 
         <li className="challengeBox">
             <div className={`category-flag ${categoryColor}`}>{props.category}</div>
-            <h5>{props.heading}</h5>
+            <h5 className="challenge-heading">{props.heading}</h5>
             <p>{props.description}</p>
             <div className="challenge-buttomNav">
                 <p>End date: {endDate}</p>

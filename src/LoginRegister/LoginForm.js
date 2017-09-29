@@ -60,7 +60,7 @@ export default class LoginForm extends Component{
                 {this.props.currentUser && <h1>You are now logged in as: {this.props.currentUser.username}</h1>}
                 {this.props.currentUser && <p>create a challange at <a href="#" onClick={() => this.props.goTo('userpage')}>My Page</a></p>}
                 {errorMessage.length != 0 &&  errorMessage.map((error) => <p>{error}</p>)}
-                <form onSubmit={this.signIn} style ={{maxWidth: "30%", margin: "2rem auto"}}>
+                <form onSubmit={this.signIn} style ={{width: "30%", minWidth: "300px", margin: "2rem auto"}}>
                     <div>
                         <label htmlFor="email">email-address</label>
                         <input type="text" className="form-control" name="email" onChange={this.onChange}></input>
