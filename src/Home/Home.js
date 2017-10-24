@@ -36,6 +36,7 @@ export default class Home extends Component{
 
 
     filterCategory = (event) => {
+        console.log(event.target.type);
         this.setState({selectedCategory: event.target.type})
     }
 

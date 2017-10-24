@@ -84,12 +84,12 @@ export default class UserPage extends Component {
             db.ref('challenges')
             .push(challenge)
             .then(this.setState({heading: '', description: '', endDate: '', category: ''})) //sets state to empty strings which clears the inputfields
+            .then(this.setState({createNew: 'hidden'}));
         }
         this.setState({errorCreateName: createNameMess})
         this.setState({errorCreateDescription: createDescriptionMess})
         this.setState({errorCreateCategory: createCategoryMess})
         this.setState({error: error})
-        this.setState({createNew: 'hidden'})  
         this.setState({selectedType: 'created by Me'})     
     }
 

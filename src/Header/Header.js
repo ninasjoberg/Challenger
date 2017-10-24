@@ -32,7 +32,7 @@ export default function Header(props){
                 </div>
             </div>
             <h1 className="heading">CHALLENGER!</h1>
-            <p className="white-text text header-text">Push yourself to new things by taking on challenges or accepting others' challenges.
+            <p className="white-text text header-text">Push yourself to new limits by taking on challenges or challenge other people.
                 <a href="#" className="green-text" onClick={() => props.goTo('login')}> Create a challenge here!</a> 
             </p>
         </div>
